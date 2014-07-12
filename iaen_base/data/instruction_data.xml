@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data noupdate="0">
+		<record model="instruction" id="primaria">
+			<field name="name">Básico</field>
+            <field name="descripcion"/>
+		</record>
+		<record model="instruction" id="bachillerato">
+			<field name="name">Bachillerato</field>
+            <field name="descripcion"/>
+		</record>
+		<record model="instruction" id="tecnico_superior">
+			<field name="name">Técnico Superior</field>
+            <field name="descripcion"/>
+		</record>
+		<record model="instruction" id="tecnologico">
+			<field name="name">Tecnológico</field>
+            <field name="descripcion"/>
+		</record>
+		<record model="instruction" id="universitaria">
+			<field name="name">Tercer Nivel</field>
+            <field name="descripcion"/>
+		</record>
+		<record model="instruction" id="especialidad">
+			<field name="name">Especialista</field>
+            <field name="descripcion"/>
+		</record>
+		<record model="instruction" id="masterado">
+			<field name="name">Masterado</field>
+            <field name="descripcion"/>
+		</record>
+		<record model="instruction" id="doctorado">
+			<field name="name">Doctorado</field>
+            <field name="descripcion"/>
+		</record>
+	</data>
+</openerp>

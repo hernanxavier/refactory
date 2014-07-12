@@ -19,39 +19,20 @@
 #
 ##############################################################################
 {
-    'name' : 'IAEN base',
+    'name' : 'IAEN curriculum',
     'version' : '1.0',
     'author' : 'IAEN',
     'category' : 'configuraciones',
     'description' : """
-    Ingreso de todas los parametros que son necesarios
-    para la creación de la hoja de vida.
+		Ingreso de la Hoja de Vida.
     """,
     'website': 'http://www.iaen.edu.ec',
     'data': [
-        'views/iaen_base_views.xml',
-        'views/iaen_base_actions.xml',
-        'views/iaen_base_menus.xml',
-        'data/ethnic_group_data.xml',
-        'data/identification_type_data.xml',
-        'data/civil_status_data.xml',
-        'data/gender_data.xml',
-        'data/family_relationship_data.xml',
-        'data/type_disability.xml',
-        'data/blood_type_data.xml',
-        'data/bank_account_type_data.xml',
-        'data/entity_finance_data.xml',
-        'data/nationality_data.xml',
-        'data/zones_data.xml',
-        'data/res_country_state_data.xml',
-        'data/canton_data.xml',
-        'data/parish_data.xml',
-        'data/certified_type_data.xml',
-        'data/event_type_data.xml',
-        'data/instruction_data.xml',
-        'data/language_data.xml',
+        'views/iaen_curriculum_views.xml',
+        'views/iaen_curriculum_actions.xml',
+        'views/iaen_curriculum_menus.xml',
+        'data/curriculum_data.xml',
     ],
-    'images' : ['images/iaen_base.jpeg'],
     'installable': True,
     'auto_install': False,
 }
