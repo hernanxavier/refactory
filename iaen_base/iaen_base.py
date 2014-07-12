@@ -19,9 +19,8 @@
 #
 ##############################################################################
 
-import openerp;
-from openerp import SUPERUSER_ID
-from openerp import pooler, tools
+
+import openerp
 from openerp.osv import fields, osv, expression
 from openerp.tools.translate import _
 from openerp.tools.float_utils import float_round as round
@@ -81,9 +80,9 @@ class res_country_state(osv.osv):
         else:
             return False
 
-
 #    _order = "name"
 #    _sql_constraints = [('name_unique', 'unique(name)', 'Ya existe una zona con el mismo nombre')]
+
 
 class canton(osv.osv):
     _name = "canton"
@@ -95,7 +94,6 @@ class canton(osv.osv):
         "description": fields.text("Descripción"),
     }
 
-
 #class city(osv.osv):
 #    _name = "city"
 #    _description = "Ciudades a las cuales pertenece cada parroquia"
@@ -104,6 +102,7 @@ class canton(osv.osv):
 #        "name": fields.char("Ciudad", size=15,required=True),
 #        "description": fields.text("Descripción",),
 #    }
+
 
 class parish(osv.osv):
     _name = "parish"
@@ -117,17 +116,28 @@ class parish(osv.osv):
 
 
 class blood_type(osv.osv):
+
     _name = "blood_type"
     _description = "Registra los tipos de sangre"
-    _columns = {
-    'name': fields.char("Nombre", size=3, required=True),
-    }
-    _order = "name"
-    _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe un Tipo de Sangre con ese nombre.'))]
-
+    
     def _no_numbers(self, cr, uid, ids):
         for bloody_type in self.browse(cr, uid, ids):
             if re.search("[0-9]", bloody_type.name): return False
         return True
 
+    _columns = {
+    'name': fields.char("Nombre", size=3, required=True),
+    }
+    _order = "name"
+    _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe un Tipo de Sangre con ese nombre.'))]
     _constraints = [(_no_numbers, _(u"El Tipo de Sangre no debe contener números."), ['name'])]
+
+
+class estado_civil(osv.osv):
+    _name = "estado_civil"
+    _description = "Informacion sobre estado civil"
+    _order = "name"
+    _sql_constraints = [('name_uniq', 'unique(name)', 'Ya existe un Estado Civil, con el mismo nombre!')]
+    _columns = {
+        'name' : fields.char("Nombre", size=50, required=True),
+    }

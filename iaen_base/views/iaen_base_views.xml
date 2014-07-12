@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
+
+    <record id="view_estadocivil_tree" model="ir.ui.view">
+      <field name="name">view.estadocivil.tree</field>
+      <field name="model">estado_civil</field>
+      <field name="arch" type="xml" >
+	    <tree string="Estado Civil">
+            <field name="name"/>
+	    </tree>
+      </field>
+    </record>
+
+    <record id="view_estadocivil_form" model="ir.ui.view">
+      <field name="name">view.estadocivil.form</field>
+      <field name="model">estado_civil</field>
+      <field name="arch" type="xml">
+	    <form string="Crear Estado Civil">
+	          <field name="name" />
+	    </form>
+      </field>
+    </record>
+
 	<record id="view_blood_type_tree" model="ir.ui.view">
       <field name="name">view.blood_type.tree</field>
       <field name="model">blood_type</field>
@@ -24,6 +45,7 @@
 	    </form>
       </field>
     </record>
+
 	<!-- Ingreso de tipos de edentificaciones -->
 	<record id="view_identification_type_tree" model="ir.ui.view">
 		<field name="name">view.identification.type.tree</field>
@@ -49,7 +71,8 @@
 		</field>
 	</record>
 
-	<!-- Ingreso de grupos étnicos -->
+
+     <!-- Ingreso de grupos étnicos -->
 	<record id="view_ethnic_group_tree" model="ir.ui.view">
 		<field name="name">view.ethnc.group.tree</field>
 		<field name="model">ethnic.group</field>
@@ -108,11 +131,9 @@
           <field name="model">res.country.state</field>
           <field name="inherit_id" ref="base.view_country_state_form"/>
           <field name="arch" type="xml">
-            
               <field name="country_id" position="before">
                 <field name="zone_id" on_change="change_zone_id(zone_id)"/>
               </field>
-           
           </field>
         </record> 
 

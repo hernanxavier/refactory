@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+
+        <!-- Ingreso marcas de items -->
+        <record id="action_item_brand" model="ir.actions.act_window">
+            <field name="name">Marcas de items</field>
+            <field name="res_model">item.brand</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- Ingreso edificios de la institución -->
+        <record id="action_location" model="ir.actions.act_window">
+            <field name="name">Edificios</field>
+            <field name="res_model">location</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+         <!-- Ingreso Dependencias (aulas, oficinas, auditorios...) de la institución -->
+        <record id="action_dependence" model="ir.actions.act_window">
+            <field name="name">Dependencias</field>
+            <field name="res_model">dependence</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- Ingreso cabecera Acta Entrega-Recepcion Equipos Informáticos -->
+        <record id="action_head_assignment" model="ir.actions.act_window">
+            <field name="name">Actas E/R</field>
+            <field name="res_model">head.assignment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!-- Ingreso detalle Acta Entrega-Recepcion Equipos Informáticos -->
+        <record id="action_detail_assignment" model="ir.actions.act_window">
+            <field name="name">Detalle</field>
+            <field name="res_model">detail.assignment</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <!--&lt;!&ndash; Ingreso tipos de items &ndash;&gt;-->
+        <!--<record id="action_item_type" model="ir.actions.act_window">-->
+            <!--<field name="name">Tipos de items</field>-->
+            <!--<field name="res_model">item.type</field>-->
+            <!--<field name="view_type">form</field>-->
+            <!--<field name="view_mode">tree,form</field>-->
+        <!--</record>-->
+       <!-- &lt;!&ndash; Ingreso de ciudades &ndash;&gt;
+        <record id="action_city" model="ir.actions.act_window">
+            <field name="name">Ciudades</field>
+            <field name="res_model">city</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>-->
+      <!--  &lt;!&ndash; Ingreso de cargos &ndash;&gt;
+        <record id="action_job" model="ir.actions.act_window">
+            <field name="name">Cargos</field>
+            <field name="res_model">job</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>-->
+
+
+    </data>
+</openerp>
+

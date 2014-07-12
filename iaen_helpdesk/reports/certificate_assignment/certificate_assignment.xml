@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <record id="certificate_assignment_id" model="ir.actions.report.xml">
+      <field name="name">Acta de Entrega / Recepción</field>
+      <field name="type">ir.actions.report.xml</field>
+      <field name="model">head.assignment</field>
+      <field name="report_name">certificate_assignment</field>
+      <field name="report_type">aeroo</field>
+      <field name="in_format">oo-odt</field>
+      <field name="parser_loc">iaen_helpdesk/reports/certificate_assignment/certificate_assignment.py</field>
+      <field name="tml_source">file</field>
+      <field name="report_rml">iaen_helpdesk/reports/certificate_assignment/acta_e_r.odt</field>
+      <field name="parser_state">loc</field>
+    </record>
+  </data>
+</openerp>

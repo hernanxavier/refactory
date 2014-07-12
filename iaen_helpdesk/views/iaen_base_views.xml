@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!-- Ingreso de marcas para los items -->
+        <record id="view_item_brand_tree" model="ir.ui.view">
+            <field name="name">view.item.brand.tree</field>
+            <field name="model">item.brand</field>
+            <field name="arch" type="xml">
+                <tree string="Marcas de Items">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_item_brand_form" model="ir.ui.view">
+            <field name="name">view.item.brand.form</field>
+            <field name="model">item.brand</field>
+            <field name="arch" type="xml">
+                <form string="Marcas de items">
+                    <group col="2" colspan="2">
+                        <field name="name"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Modificación vista para Inventarios/productos -->
+        <record id="view_account_asset_asset_form_inherit" model="ir.ui.view">
+            <field name="name">view.account.asset.asset.form.inherit</field>
+            <field name="model">account.asset.asset</field>
+            <field name="inherit_id" ref="account_asset.view_account_asset_asset_form"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <field name="serial_number"/>
+                    <field name="brand"/>
+                    <field name="model"/>
+                    <field name="assignment"/>
+                </field>
+            </field>
+        </record>
+
+        <!-- Ingreso de edificios institucionales -->
+        <record id="view_location_tree" model="ir.ui.view">
+            <field name="name">view.location.tree</field>
+            <field name="model">location</field>
+            <field name="arch" type="xml">
+                <tree string="Edificios">
+                    <field name="name"/>
+                    <field name="address"/>
+                    <field name="observations"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_location_form" model="ir.ui.view">
+            <field name="name">view.location.form</field>
+            <field name="model">location</field>
+            <field name="arch" type="xml">
+                <form string="Edificios">
+                    <group col="2" colspan="2">
+                        <field name="name"/>
+                        <field name="address"/>
+                        <field name="observations"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Ingreso de departamentos institucion -->
+        <record id="view_dependence_tree" model="ir.ui.view">
+            <field name="name">view.dependence.tree</field>
+            <field name="model">dependence</field>
+            <field name="arch" type="xml">
+                <tree string="Dependencias">
+                    <field name="name"/>
+                    <field name="observations"/>
+                    <field name="location_ids"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_dependence_form" model="ir.ui.view">
+            <field name="name">view.dependence.form</field>
+            <field name="model">dependence</field>
+            <field name="arch" type="xml">
+                <form string="Dependencias">
+                    <group col="2" colspan="2">
+                        <field name="name"/>
+                        <field name="observations"/>
+                        <field name="location_ids"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <!-- Ingreso de cabecera de acta entrega-recepcion de Equipos informaticos y accesorios -->
+        <record id="view_head_assignment_tree" model="ir.ui.view">
+            <field name="name">view.head.assignment.tree</field>
+            <field name="model">head.assignment</field>
+            <field name="arch" type="xml">
+                <tree string="Actas E/R">
+                    <field name="name"/>
+                    <field name="date"/>
+                    <field name="deliv_employ_id"/>
+                    <field name="assig_employ_id"/>
+                    <field name="observations"/>
+                </tree>
+            </field>
+        </record>
+        <record id="view_head_assignment_form" model="ir.ui.view">
+            <field name="name">view.head.assignment.form</field>
+            <field name="model">head.assignment</field>
+            <field name="arch" type="xml">
+                <form string="Actas E/R">
+                    <notebook>
+                        <page string = "Acta Entrega/Recepcion">
+                                <group col="2" colspan="2">
+                                    <field name="name"/>
+                                    <field name="date"/>
+                                    <field name="deliv_employ_id"/>
+                                    <field name="assig_employ_id"/>
+                                </group>
+                                <newline/>
+                                <field name="detail_assignment_ids" nolabel="1">
+                                    <tree string="Detalle" editable="bottom">
+                                        <field name="quantity"/>
+                                        <field name="cod_item_id" on_change="on_change_fill_data_item(cod_item_id)"/> <!-- Autorellena campos detalle-->
+                                        <field name="name_item" readonly="1"/>
+                                        <field name="serial_number" readonly="1"/>
+                                        <field name="category" readonly="1"/>
+                                        <field name="brand" readonly="1"/>
+                                        <field name="model" readonly="1"/>
+                                        <field name="dependence_id" on_change="on_change_fill_data_dependence(dependence_id)"/>
+                                        <field name="location_id" readonly="1"/>
+                                        <field name="floor"/>
+                                        <field name="city_id"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                        </page>
+                        <page string="Observaciones">
+                            <field name="observations"/>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+
+
+        <!--&lt;!&ndash; Ingreso de tipos de item para el einventario (Laptops, Bolsos, Cargadores) &ndash;&gt;-->
+        <!--<record id="view_item_type_tree" model="ir.ui.view">-->
+        <!--<field name="name">view.item.type.tree</field>-->
+        <!--<field name="model">item.type</field>-->
+        <!--<field name="arch" type="xml">-->
+        <!--<tree string="Tipos de Items">-->
+        <!--<field name="name"/>-->
+        <!--<field name="description"/>-->
+        <!--</tree>-->
+        <!--</field>-->
+        <!--</record>-->
+        <!--<record id="view_item_type_form" model="ir.ui.view">-->
+        <!--<field name="name">view.item.type.form</field>-->
+        <!--<field name="model">item.type</field>-->
+        <!--<field name="arch" type="xml">-->
+        <!--<form string="Tipos de items">-->
+        <!--<group col="2" colspan="2">-->
+        <!--<field name="name"/>-->
+        <!--<field name="description"/>-->
+        <!--</group>-->
+        <!--</form>-->
+        <!--</field>-->
+        <!--</record>-->
+
+        <!--   &lt;!&ndash; Ingreso de ciudades &ndash;&gt;
+           <record id="view_city_tree" model="ir.ui.view">
+               <field name="name">view.city.tree</field>
+               <field name="model">city</field>
+               <field name="arch" type="xml">
+                   <tree string="Ciudades">
+                       <field name="name"/>
+                   </tree>
+               </field>
+           </record>
+           <record id="view_city_form" model="ir.ui.view">
+               <field name="name">view.city.form</field>
+               <field name="model">city</field>
+               <field name="arch" type="xml">
+                   <form string="Ciudades">
+                       <group col="2" colspan="2">
+                           <field name="name"/>
+                       </group>
+                   </form>
+               </field>
+           </record>-->
+
+        <!--      &lt;!&ndash; Ingreso de cargos &ndash;&gt;
+              <record id="view_job_tree" model="ir.ui.view">
+                  <field name="name">view.job.tree</field>
+                  <field name="model">job</field>
+                  <field name="arch" type="xml">
+                      <tree string="Cargos">
+                          <field name="name"/>
+                          <field name="description"/>
+                      </tree>
+                  </field>
+              </record>
+              <record id="view_job_form" model="ir.ui.view">
+                  <field name="name">view.job.form</field>
+                  <field name="model">job</field>
+                  <field name="arch" type="xml">
+                      <form string="Cargos">
+                          <group col="2" colspan="2">
+                              <field name="name"/>
+                              <field name="description"/>
+                          </group>
+                      </form>
+                  </field>
+              </record>-->
+
+
+    </data>
+</openerp>

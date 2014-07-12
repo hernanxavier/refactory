@@ -22,7 +22,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
-        <!-- Ingreso de grupos étnicos -->
+        <!-- Ingreso de paises -->
         <record id="action_res_country" model="ir.actions.act_window">
             <field name="name">Pais</field>
             <field name="res_model">res.country</field>
@@ -66,9 +66,11 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
         </record>
-
-        
-
+    <record id="action_estadocivil" model="ir.actions.act_window">
+      <field name="name">Estado Civil</field>
+      <field name="res_model">estado_civil</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
     </data>
 </openerp>
-

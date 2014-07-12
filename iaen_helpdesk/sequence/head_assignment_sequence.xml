@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.sequence.type" id="seq_type_head_assignment">
+            <field name="name">Num. Acta Entrega Recepcion</field>
+            <field name="code">head.assignment</field>
+        </record>
+        <record model="ir.sequence" id="seq_head_assignment">
+            <field name="name">Acta Entrega Recepcion</field>
+            <field name="code">head.assignment</field>
+            <field name="padding" eval="4"/>
+            <field name="prefix">AER</field>
+        </record>
+    </data>
+</openerp>
