@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="workflow" id="wkf_head_assignment">
+            <field name="name">wkf.head.assignment</field>
+            <field name="osv">head.assignment</field>
+            <field name="on_create">True</field>
+        </record>
+
+        <!-- ACTIVITY -->
+        <record model="workflow.activity" id="act_new">
+            <field name="wkf_id" ref="wkf_head_assignment"/>
+            <field name="name">draft</field>
+            <field name="flow_start">True</field>
+        </record>
+
+        <record model="workflow.activity" id="act_assignment">
+            <field name="wkf_id" ref="wkf_head_assignment"/>
+            <field name="name">assignment</field>
+            <field name="kind">function</field>
+            <field name="action">change_state("assignment")</field>
+        </record>
+
+        <record model="workflow.activity" id="act_discharge">
+            <field name="wkf_id" ref="wkf_head_assignment"/>
+            <field name="name">discharge</field>
+            <field name="flow_stop">True</field>
+            <field name="kind">function</field>
+            <field name="action">change_state("discharge")</field>
+        </record>
+
+        <record model="workflow.activity" id="act_partial">
+            <field name="wkf_id" ref="wkf_head_assignment"/>
+            <field name="name">partial</field>
+            <field name="kind">function</field>
+            <field name="action">change_state("partial")</field>
+        </record>
+
+        <record model="workflow.activity" id="act_cancel">
+            <field name="wkf_id" ref="wkf_head_assignment"/>
+            <field name="name">cancel</field>
+            <field name="flow_stop">True</field>
+            <field name="kind">function</field>
+            <field name="action">change_state("cancel")</field>
+        </record>
+
+        <!-- Transition -->
+
+        <record model="workflow.transition" id="trans_draft_assignment">
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_assignment"/>
+            <!--<field name="group_id" ref="base.group_user"/>-->
+            <field name="signal">btn_assignment</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_draft_cancel">
+            <field name="act_from" ref="act_new"/>
+            <field name="act_to" ref="act_cancel"/>
+            <!--<field name="group_id" ref="base.group_user"/>-->
+            <field name="signal">btn_cancel</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_assignment_discharge">
+            <field name="act_from" ref="act_assignment"/>
+            <field name="act_to" ref="act_discharge"/>
+            <!--<field name="group_id" ref="base.group_user"/>-->
+            <field name="signal">btn_discharge</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_assignment_partial">
+            <field name="act_from" ref="act_assignment"/>
+            <field name="act_to" ref="act_partial"/>
+            <!--<field name="group_id" ref="base.group_user"/>-->
+            <field name="signal">btn_partial</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_partial_discharge">
+            <field name="act_from" ref="act_partial"/>
+            <field name="act_to" ref="act_discharge"/>
+            <!--<field name="group_id" ref="base.group_user"/>-->
+            <field name="signal">btn_discharge</field>
+        </record>
+
+        <record model="workflow.transition" id="trans_partial_cancel">
+            <field name="act_from" ref="act_partial"/>
+            <field name="act_to" ref="act_cancel"/>
+            <!--<field name="group_id" ref="base.group_user"/>-->
+            <field name="signal">btn_cancel</field>
+        </record>
+
+    </data>
+</openerp>

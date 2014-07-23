@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem id="menu_helpdesk" name="HELPDESK" parent="iaen_base.menu_iaen"/>
+        <menuitem id="menu_assignment" name="Inventario / Asignación Items" parent="menu_helpdesk"/>
+        <menuitem action="action_item_brand" id="menu_item_brand" name="Marcas de Items" parent="menu_assignment"/>
+        <menuitem action="action_location" id="menu_location" name="Edificios" parent="menu_assignment"/>
+        <menuitem action="action_dependence" id="menu_dependence" name="Dependencias" parent="menu_assignment"/>
+        <menuitem action="action_head_assignment" id="menu_head_assignment" name="Actas E/R" parent="menu_assignment"/>
+        <menuitem action="action_item_status" id="menu_item_status" name="Estados Items" parent="menu_assignment"/>
+    </data>
+</openerp>

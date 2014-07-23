@@ -1,0 +1,29 @@
+<?xml version="1.0"  encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record model="item.status" id="new" >
+      <field name="name">Nuevo</field>
+      <field name="description">Nuevo de paquete</field>
+    </record>
+    <record model="item.status" id="good" >
+      <field name="name">Bueno</field>
+      <field name="description">Item usado en buen estado</field>
+    </record>
+    <record model="item.status" id="bad" >
+      <field name="name">Malo</field>
+      <field name="description">Item funcionando pero en mal estado (Roto, Rayado, Golpeado...)</field>
+    </record>
+    <record model="item.status" id="damaged" >
+      <field name="name">Averiado</field>
+      <field name="description">Item necesita reparación</field>
+    </record>
+    <record model="item.status" id="useless" >
+      <field name="name">Inservible</field>
+      <field name="description">Item para descartar o dar de baja</field>
+    </record>
+    <record model="item.status" id="lost" >
+      <field name="name">Extraviado</field>
+      <field name="description">Item desaparecido</field>
+    </record>
+  </data>
+</openerp>
