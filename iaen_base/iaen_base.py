@@ -35,6 +35,7 @@ class identification_type(osv.osv):
     _order = "name"
     _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe un tipo de identificación con el mismo nombre'))]
     _columns = {
+        "code_mrl": fields.integer("Código MRL"),
         "name": fields.char("Nombre", size=100, required=True),
         "description": fields.text("Descripción"),
     }
@@ -46,32 +47,32 @@ class ethnic_group(osv.osv):
     _order = "name"
     _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe un grupo étnico con el mismo nombre'))]
     _columns = {
+        "code_mrl": fields.integer("Código MRL"),
         "name": fields.char("Nombre", size=100, required=True),
         "description": fields.text("Descripción"),
     }
 
 
-#CLASE DE IDENTIDAD DE GENERO
-class gender(osv.osv):
-    _name = "gender"
-    _description = "Tipos de identidad de genero"
+#CLASE PARA TIPO DE SEXO
+class type_sex(osv.osv):
+    _name = "type.sex"
+    _description = "Tipos de sexo"
     _order = "name"
     _columns = {
         "name": fields.char("Nombre", size=15, required=True),
-        "description": fields.text("Detalle"),
+        "code_mrl": fields.integer("Cod MRL", required=True),
     }
     _order = "name"
     _sql_constraints = [('name_uniq', 'unique(name)', _(u'Ya existe un genero con el mismo nombre'))]
 
-    def _alphabetical(self, cr, uid, ids):
-        for bloody_type in self.browse(cr, uid, ids):
-            if re.search("[^a-z, A-Z]", bloody_type.name): return False
-        return True
-
-    _constraints = [(_alphabetical, _(u"El Tipo de dato es invalido."), ['name'])]
-
 
 class zones(osv.osv):
+    """
+    CRUD con la división política por zonas para el Ecuador
+    name: 
+    description:
+    country_id:
+    """
     _name = "zones"
     _description = "Categoriza zonas por provincias"
     _order = "name"
@@ -83,13 +84,33 @@ class zones(osv.osv):
     }
 
 
+class res_country(osv.osv):
+    """
+    Herencia para la creación del CRUD para paices, heredado desde la tabla res_country
+    code_mrl:
+    """
+    _inherit = "res.country"
+    _columns = {
+        "code_mrl": fields.integer("Código MRL"),
+    }
+
+
 class res_country_state(osv.osv):
+    """
+    Herencia para la creación del CRUD para los estados o provincias, heredado desde la tabla res_country_state
+    code_mrl:
+    zone_id:
+    """
     _inherit = "res.country.state"
     _columns = {
+        "code_mrl": fields.integer("Código MRL"),
         "zone_id": fields.many2one("zones", "Zona", help="Distribución zonal, a la que pertenece la provincia")
     }
 
     def change_zone_id(self, cr, uid, ids, zone):
+        """
+        Función para la selección automática del pais, segú la zona seleccionada
+        """
         if zone:
             zone_obj = self.pool.get('zones').browse(cr, uid, zone)
             print zone_obj
@@ -102,36 +123,54 @@ class res_country_state(osv.osv):
 
 
 class canton(osv.osv):
+    """
+    CRUD para la generación e ingreso de los cantones y/o ciudades de una provincia
+    name:
+    code_mrl:
+    country_state_id:
+    """
     _name = "canton"
     _description = "Cantones/ciudades de una provincia"
     _order = "name"
     _columns = {
         "name": fields.char("Ciudad/Cantón", size=15, required=True),
+        "code_mrl": fields.integer("Código MRL"),
         "country_state_id": fields.many2one("res.country.state", "Provincia", required=True),
     }
 
 
 class parish(osv.osv):
+    """
+    CRUD para la generación de parroquieas que pertenecen a un cantón
+    name:
+    code_mrl:
+    canton_id:
+    description:
+    """
     _name = "parish"
     _description = u'Parroquias que pertenecen a un cantón'
     _order = "name"
     _columns = {
         "name": fields.char("Parroquia", size=15, required=True),
+        "code_mrl": fields.integer("Código MRL"),
         "canton_id": fields.many2one("canton", "Cantón", required=True),
         "description": fields.text("Descripción"),
     }
 
 
 class blood_type(osv.osv):
+    """ Clase para los Tipos de Sangre """
     _name = "blood.type"
     _description = "Registra los tipos de sangre"
     _columns = {
     'name': fields.char("Nombre", size=3, required=True),
+    'code_mrl': fields.integer('Código MRL', required=True)
     }
     _order = "name"
     _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe un Tipo de Sangre con ese nombre.'))]
 
     def _no_numbers(self, cr, uid, ids):
+        """ Valida que una cadena de caracteres no contenga dígitos"""
         for bloody_type in self.browse(cr, uid, ids):
             if re.search("[0-9]", bloody_type.name): return False
         return True
@@ -143,8 +182,12 @@ class civil_status(osv.osv):
     _name = "civil.status"
     _description = "Informacion sobre estado civil"
     _order = "name"
-    _sql_constraints = [('name_uniq', 'unique(name)', 'Ya existe un Estado Civil con el mismo nombre')]
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', 'Ya existe un Estado Civil con el mismo nombre'),
+        ('cod_unique', 'unique(code_mrl)', _(u'Ya existe un Registro con ese código Mrl'))
+    ]
     _columns = {
+        'code_mrl': fields.integer("Codigo MRL", size=3),
         'name': fields.char("Nombre", size=50, required=True),
     }
 
@@ -158,6 +201,7 @@ class family_relationship(osv.osv):
     _columns = {
         "name": fields.char("Nombre", size=20, required=True),
         "description": fields.text("Descripcion"),
+        "code_mrl": fields.integer("Código MRL"),
     }
 
     def _alphabetical(self, cr, uid, ids):
@@ -165,19 +209,22 @@ class family_relationship(osv.osv):
             if re.search("[^a-z, A-Z]", bloody_type.name): return False
         return True
 
-    #    _constraints = [(_alphabetical, _(u"El Tipo de dato es invalido."), ['name'])]
+        #    _constraints = [(_alphabetical, _(u"El Tipo de dato es invalido."), ['name'])]
 
 
 class nationality(osv.osv):
+    """ Clase para las Nacionalidades """
     _name = "nationality"
     _description = "Registra las nacionalidades"
     _columns = {
     'name': fields.char("Nombre", size=45, required=True),
+    'code_mrl': fields.integer("Código MRL", required=True)
     }
     _order = "name"
     _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe una Nacionalidad con ese nombre.'))]
 
     def _only_letters(self, cr, uid, ids):
+        """ Valida que una cadena contenga únicamente letras, incluyendo tildes y ñ solamente """
         for nationality in self.browse(cr, uid, ids):
             if not re.match(u"^[ñA-Za-zÁÉÍÓÚáéíóúü\s]+$", nationality.name): return False
         return True
@@ -186,21 +233,19 @@ class nationality(osv.osv):
 
 
 class instruction(osv.osv):
+    #"""Clase para las Instrucciones"""
     _name = "instruction"
+    _sql_constraints = [
+        ('name_uniq', 'unique(name)', 'Ya existe un Registro con el mismo nombre'),
+        ('cod_unique', 'unique(code_mrl)', _(u'Ya existe un Registro con ese código Mrl'))
+    ]
     _description = "Registra las instrucciones"
     _columns = {
-    'name': fields.char("Nombre", size=200, required=True),
-    'description': fields.text("Descripción"),
+        'code_mrl': fields.integer("Código MRL"),
+        'name': fields.char("Nombre", size=200, required=True),
+        'description': fields.text("Descripción"),
     }
     _order = "name"
-    _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe una Instrucción con ese nombre.'))]
-
-    def _only_letters(self, cr, uid, ids):
-        for instruction in self.browse(cr, uid, ids):
-            if not re.match(u"^[ñA-Za-zÁÉÍÓÚáéíóú\s]+$", instruction.name): return False
-        return True
-
-    _constraints = [(_only_letters, _(u"La Nacionalidad debe contener letras únicamente"), ['name'])]
 
 
 class entity_finance(osv.osv):
@@ -208,17 +253,14 @@ class entity_finance(osv.osv):
     _name = "entity.finance"
     _description = "Entidad Financiera"
     _order = "name"
-    _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe una Entidad Financiera con ese nombre.'))]
+    _sql_constraints = [
+        ('name_unique', 'unique(name)', _(u'Ya existe una Entidad Financiera con ese nombre.')),
+        ('cod_unique', 'unique(code_mrl)', _(u'Ya existe un Registro con ese código Mrl'))
+    ]
     _columns = {
+        "code_mrl": fields.integer("Codigo MRL", size=3),
         "name": fields.char("Nombre", size=50, required=True),
     }
-
-    def _no_caracter(self, cr, uid, ids):
-        for entity_finance in self.browse(cr, uid, ids):
-            if (re.search("[^a-z, ^A-Z, ^0-9]", entity_finance.name)): return False
-        return True
-
-    _constraints = [(_no_caracter, _(u"No debe contener caracteres especiales"), ['Nombre'])]
 
 
 class bank_account_type(osv.osv):
@@ -226,17 +268,14 @@ class bank_account_type(osv.osv):
     _name = "bank.account.type"
     _description = "Tipo de Cuenta"
     _order = "name"
-    _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe un tipo de cuenta bancaria con ese nombre.'))]
+    _sql_constraints = [
+        ('name_unique', 'unique(name)', _(u'Ya existe un tipo de cuenta bancaria con ese nombre.')),
+        ('cod_unique', 'unique(code_mrl)', _(u'Ya existe un Registro con ese código Mrl'))
+    ]
     _columns = {
+        "code_mrl": fields.integer("Codigo MRL", size=3),
         "name": fields.char("Nombre", size=50, required=True),
     }
-
-    def _no_numbers(self, cr, uid, ids):
-        for bank_account_type in self.browse(cr, uid, ids):
-            if re.search("[^a-z, A-Z]", bank_account_type.name): return False
-        return True
-
-    _constraints = [(_no_numbers, _(u'Debe contener solo caracteres alfabéticos.'), ['Nombre'])]
 
 
 #TIPO DE DISCAPACIDAD
@@ -248,6 +287,7 @@ class type_disability(osv.osv):
     _columns = {
         "name": fields.char("Nombre", size=30, required=True),
         "description": fields.text("Descripcion"),
+        "code_mrl": fields.integer("Código MRL"),
     }
 
     def _alphabetical(self, cr, uid, ids):
@@ -255,7 +295,7 @@ class type_disability(osv.osv):
             if not (re.search("[a-z, A-Z]", bloody_type.name)): return False
         return True
 
-    _constraints = [(_alphabetical, _(u"El Tipo de dato es invalido."), ['name'])]
+    _constraints = [(_alphabetical, _(u"El Tipo de dato es inválido."), ['name'])]
 
 
 #TIPO DE EVENTO
@@ -267,14 +307,14 @@ class event_type(osv.osv):
     _columns = {
         "name": fields.char("Nombre", size=20, required=True),
         "description": fields.text("Descripcion"),
+        "code_mrl": fields.integer("Código MRL"),
     }
-
-    def _alphabetical(self, cr, uid, ids):
+"""    def _alphabetical(self, cr, uid, ids):
         for bloody_type in self.browse(cr, uid, ids):
             if re.search("[^a-z, A-Z]", bloody_type.name): return False
         return True
 
-    _constraints = [(_alphabetical, _(u"El Tipo de dato es invalido."), ['name'])]
+    _constraints = [(_alphabetical, _(u"El Tipo de dato es inválido."), ['name'])]"""
 
 
 class certified_type(osv.osv):
@@ -285,14 +325,25 @@ class certified_type(osv.osv):
     _columns = {
         "name": fields.char("Nombre", size=15, required=True),
         "description": fields.text("Descripcion"),
+        "code_mrl": fields.integer("Código MRL"),
     }
-
-    def _alphabetical(self, cr, uid, ids):
+"""    def _alphabetical(self, cr, uid, ids):
         for bloody_type in self.browse(cr, uid, ids):
             if re.search("[^a-z, A-Z]", bloody_type.name): return False
         return True
 
-    _constraints = [(_alphabetical, _(u"El Tipo de dato es invalido."), ['name'])]
+    _constraints = [(_alphabetical, _(u"El Tipo de dato es invalido."), ['name'])]"""
+
+
+class jobs_type(osv.osv):
+    _name = "jobs.type"
+    _description = "Tipo de Trabajos"
+    _order = "name"
+    _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe un registro con el mismo nombre'))]
+    _columns = {
+        "name": fields.char("Nombre", size=100, required=True),
+        "description": fields.text("Descripción"),
+    }
 
 
 #CLASE PARA IDIOMAS
@@ -305,3 +356,76 @@ class language_type(osv.osv):
         "cod_language": fields.char("Detalle", size=25, required=True),
         "name": fields.char("Nombre", size=30, required=True),
     }
+
+
+class input_motive(osv.osv):
+    _name = "input.motive"
+    _description = "Motivos de Entrada Laboral"
+    _order = "name"
+    _sql_constraints = [('name_uniq', 'unique(name)', _(u'Ya existe un registro con el mismo nombre'))]
+    _columns = {
+        "code_mrl": fields.integer("Codigo MRL"),
+        "name": fields.char("Nombre", size=100, required=True),
+        "description": fields.text("Descripción")
+    }
+
+
+class output_motive(osv.osv):
+    _name = "output.motive"
+    _description = "Motivos de Salida Laboral"
+    _order = "name"
+    _sql_constraints = [('name_uniq', 'unique(name)', _(u'Ya existe un registro con el mismo nombre'))]
+    _columns = {
+        "code_mrl": fields.integer("Codigo MRL"),
+        "name": fields.char("Nombre", size=100, required=True),
+        "description": fields.text("Descripción")
+    }
+
+
+class entity_type(osv.osv):
+    _name = "entity.type"
+    _description = "Tipos de Entidades"
+    _order = "name"
+    _sql_constraints = [('name_uniq', 'unique(name)', _(u'Ya existe un registro con el mismo nombre'))]
+    _columns = {
+        "code_mrl": fields.integer("Codigo MRL"),
+        "name": fields.char("Nombre", size=100, required=True),
+        "description": fields.text("Descripción")
+    }
+
+
+#CLASE: NOTARIAS
+class name_notary(osv.osv):
+    _name = "name.notary"
+    _description = "Notarias del Ecuador"
+    _order = "name"
+    _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe un campo con el mismo nombre'))]
+    _columns = {
+        "name": fields.char("Nombre", size=30, required=True),
+        "code_mrl": fields.integer("Código MRL"),
+    }
+
+    def _alphabetical(self, cr, uid, ids):
+        for bloody_type in self.browse(cr, uid, ids):
+            if not (re.search("[a-z, A-Z]", bloody_type.name)): return False
+        return True
+
+    _constraints = [(_alphabetical, _(u"El Tipo de dato es inválido."), ['name'])]
+
+
+#CLASE: Nacionalidad Indigena
+class indian_nationality(osv.osv):
+    _name = "indian.nationality"
+    _description = "Nacionalidad indigena"
+    _order = "name"
+    _sql_constraints = [('name_unique', 'unique(name)', _(u'Ya existe un campo con el mismo nombre'))]
+    _columns = {
+        "name": fields.char("Nombre", size=30, required=True),
+        "code_mrl": fields.integer("Código MRL"),
+    }
+
+    def _alphabetical(self, cr, uid, ids):
+        for bloody_type in self.browse(cr, uid, ids):
+            if not (re.search("[a-z, A-Z]", bloody_type.name)): return False
+        return True
+    _constraints = [(_alphabetical, _(u"El Tipo de dato es inválido."), ['name'])]
